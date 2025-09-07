@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] List<Rigidbody2D> rigidbodies;
+    [SerializeField] List<Hero> heroes;
     [SerializeField] float mSpeed;
+    [SerializeField] float jumpForce;
+    bool canMove = true;
     InputSystem_Actions inputActions;
 
     void Start()
@@ -15,33 +18,70 @@ public class PlayerMovement : MonoBehaviour
         inputActions.UI.Disable();
         inputActions.Player.Enable();
 
-        inputActions.Player.Move.performed += Move;
-        inputActions.Player.Move.canceled += Move;
-
         inputActions.Player.Jump.performed += Jump;
-
+        SubscribeHeroEvents();
     }
 
-    // Update is called once per frame
     void Update()
     {
-
+        if (CheckWin())
+        {
+            Debug.Log("Win");
+            //TODO: Win things
+        }
+    }
+    void FixedUpdate()
+    {
+        Move();
     }
 
-    void Move(InputAction.CallbackContext ctx)
+    void Move()
     {
-        Vector2 dir = ctx.action.ReadValue<Vector2>();
-        Debug.Log(dir);
-        foreach (var rb in rigidbodies)
+        Vector2 dir = inputActions.Player.Move.ReadValue<Vector2>();
+        if (!canMove) dir = Vector2.zero;
+        foreach (var hero in heroes)
         {
-            rb.linearVelocityX = dir.x * mSpeed;
+            hero.rb.linearVelocityX = dir.x * mSpeed;
         }
-
     }
 
     void Jump(InputAction.CallbackContext ctx)
     {
+        foreach (var hero in heroes)
+        {
+            if (hero.CanJump()) hero.rb.AddForceY(jumpForce);
+        }
+    }
 
+    void GameOver()
+    {
+        canMove = false;
+        Invoke("ReloadScene", 1f);
+    }
+
+    bool CheckWin()
+    {
+        foreach (Hero hero in heroes)
+        {
+            if (!hero.CheckPortal())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    void SubscribeHeroEvents()
+    {
+        foreach (Hero hero in heroes)
+        {
+            hero.OnDeath += GameOver;
+        }
     }
 
     void OnDisable()
