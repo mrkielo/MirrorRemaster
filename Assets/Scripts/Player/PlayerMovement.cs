@@ -47,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump(InputAction.CallbackContext ctx)
     {
+        if (!canMove) return;
         foreach (var hero in heroes)
         {
             if (hero.CanJump()) hero.rb.AddForceY(jumpForce);
