@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6427135028347875380}
   - component: {fileID: 1490605876288464762}
   - component: {fileID: 2596916297976704487}
+  - component: {fileID: 7754247475110935900}
   m_Layer: 7
   m_Name: Portal
   m_TagString: Untagged
@@ -80,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: -7918822702899010857, guid: 4802db484de6eb3489ffd89928276551, type: 3}
+  m_Sprite: {fileID: -8163747045816357467, guid: 8e60e9f2e08143742a141ffad14c17e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -137,3 +138,17 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &7754247475110935900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5060432558968989874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0d78f479b714be4caebb94407905fe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Portal
+  openSprite: {fileID: -8163747045816357467, guid: 8e60e9f2e08143742a141ffad14c17e1, type: 3}
+  closeSprite: {fileID: -6615754364058474049, guid: 40b51160285218c44a1001a0dfe09471, type: 3}
