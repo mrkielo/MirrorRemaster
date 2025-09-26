@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using NUnit.Framework;
 using UnityEngine;
 
 public class Hero : MonoBehaviour
@@ -15,7 +16,9 @@ public class Hero : MonoBehaviour
 
     float coyoteTimer;
     int facingDir;
-    int inputDir;
+    bool isDashing = false;
+    bool isDashCharged = false;
+    float inputDir;
 
     void Start()
     {
@@ -25,11 +28,24 @@ public class Hero : MonoBehaviour
 
     public void TryDash()
     {
-        if (!CheckGround())
+        if (CanDash())
         {
-            rb.linearVelocityY = 0;
-            rb.AddForceX(facingDir * playerData.dashPower);
+            StartCoroutine(DashCoroutine());
+            isDashCharged = false;
         }
+    }
+
+    IEnumerator DashCoroutine()
+    {
+        float startTime = Time.time;
+        isDashing = true;
+        int dashDir = facingDir;
+        while (startTime + playerData.dashTime > Time.time)
+        {
+            rb.linearVelocity = new Vector2(playerData.dashPower * dashDir, 0);
+            yield return null;
+        }
+        isDashing = false;
     }
 
 
@@ -45,7 +61,6 @@ public class Hero : MonoBehaviour
 
     public bool CanJump()
     {
-
         if (CheckGround())
         {
             return true;
@@ -57,8 +72,15 @@ public class Hero : MonoBehaviour
         }
     }
 
+    public bool CanDash()
+    {
+        return !CheckGround() && isDashCharged;
+    }
+
     public void Move(float dir)
     {
+        inputDir = dir;
+        if (isDashing) return;
 
         rb.linearVelocityX = Mathf.Lerp(rb.linearVelocityX, dir * playerData.mSpeed, playerData.mSmoothing);
 
@@ -86,6 +108,7 @@ public class Hero : MonoBehaviour
         if (CheckGround())
         {
             coyoteTimer = Time.time;
+            isDashCharged = true;
         }
     }
 
@@ -106,9 +129,14 @@ public class Hero : MonoBehaviour
 
     void AnimationTree()
     {
+        if (isDashing)
+        {
+            heroAnimation.SetState(HeroAnimation.Dash);
+            return;
+        }
         if (CheckGround())
         {
-            if (rb.linearVelocityX != 0)
+            if (inputDir != 0)
             {
                 heroAnimation.SetState(HeroAnimation.Run);
             }

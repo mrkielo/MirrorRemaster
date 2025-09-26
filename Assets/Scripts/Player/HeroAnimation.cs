@@ -8,6 +8,8 @@ public class HeroAnimation : MonoBehaviour
     public static int Run = Animator.StringToHash("Run");
     public static int Jump = Animator.StringToHash("Jump");
     public static int Fall = Animator.StringToHash("Fall");
+    public static int Dash = Animator.StringToHash("Dash");
+
 
 
     public void SetState(int state)

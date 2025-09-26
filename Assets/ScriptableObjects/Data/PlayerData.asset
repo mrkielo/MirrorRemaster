@@ -16,4 +16,5 @@ MonoBehaviour:
   jumpForce: 750
   mSmoothing: 0.4
   coyoteTime: 0.075
-  dashPower: 2000
+  dashPower: 15
+  dashTime: 0.2
