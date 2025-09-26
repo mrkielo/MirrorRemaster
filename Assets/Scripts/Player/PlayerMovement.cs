@@ -6,11 +6,18 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] List<Hero> heroes;
-    [SerializeField] float mSpeed;
-    [SerializeField] float jumpForce;
+    [SerializeField] Hero heroLeft;
+    [SerializeField] Hero heroRight;
+    List<Hero> heroes = new List<Hero>();
     bool canMove = true;
     InputSystem_Actions inputActions;
+
+
+    void Awake()
+    {
+        heroes.Add(heroLeft);
+        heroes.Add(heroRight);
+    }
 
     void Start()
     {
@@ -41,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
         if (!canMove) dir = Vector2.zero;
         foreach (var hero in heroes)
         {
-            hero.rb.linearVelocityX = dir.x * mSpeed;
+            hero.Move(dir.x);
         }
     }
 
@@ -50,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
         if (!canMove) return;
         foreach (var hero in heroes)
         {
-            if (hero.CanJump()) hero.rb.AddForceY(jumpForce);
+            if (hero.CanJump()) hero.Jump();
         }
     }
 

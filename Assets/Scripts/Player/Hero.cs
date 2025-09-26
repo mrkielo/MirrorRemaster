@@ -7,12 +7,23 @@ public class Hero : MonoBehaviour
     public Rigidbody2D rb;
     [SerializeField] Collider2D groundCheck;
     [SerializeField] WorldData worldData;
+    [SerializeField] PlayerData playerData;
+
     [SerializeField] ParticleSystem deathParticles;
     public event Action OnDeath;
+
+    float coyoteTimer;
+    int direction;
 
     void Start()
     {
         OnDeath += PlayDeathEffects;
+        coyoteTimer = -playerData.coyoteTime;
+    }
+
+    void Dash()
+    {
+        rb.AddForceX(direction * playerData.dashPower);
     }
 
 
@@ -28,8 +39,35 @@ public class Hero : MonoBehaviour
 
     public bool CanJump()
     {
-        //in case of more jump conditions
-        return CheckGround();
+
+        if (CheckGround())
+        {
+            return true;
+        }
+        else
+        {
+            if (coyoteTimer + playerData.coyoteTime > Time.time) return true;
+            else return false;
+        }
+    }
+
+    public void Move(float dir)
+    {
+        rb.linearVelocityX = Mathf.Lerp(rb.linearVelocityX, dir * playerData.mSpeed, playerData.mSmoothing);
+        if (rb.linearVelocityX > 0) direction = 1;
+        else if (rb.linearVelocityX < 0) direction = -1;
+    }
+    public void Jump()
+    {
+        rb.AddForceY(playerData.jumpForce);
+    }
+
+    void Update()
+    {
+        if (CheckGround())
+        {
+            coyoteTimer = Time.time;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -58,9 +96,4 @@ public class Hero : MonoBehaviour
             yield return null;
         }
     }
-
-
-
-
-
 }

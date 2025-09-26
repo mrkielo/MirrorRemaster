@@ -47,11 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b162cda126446e4c8fd5f498a42d6ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  heroes:
-  - {fileID: 9154260717051739177}
-  - {fileID: 1351907313244424117}
-  mSpeed: 7
-  jumpForce: 750
+  heroLeft: {fileID: 1351907313244424117}
+  heroRight: {fileID: 9154260717051739177}
 --- !u!114 &7358166876123197648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,7 +129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6427824046692667226, guid: fa748db1a343693469fa16e0aafc235d, type: 3}
       propertyPath: m_Name
-      value: Hero1
+      value: HeroRight
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -205,7 +202,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6427824046692667226, guid: fa748db1a343693469fa16e0aafc235d, type: 3}
       propertyPath: m_Name
-      value: Hero2
+      value: HeroLeft
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

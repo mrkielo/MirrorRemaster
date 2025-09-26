@@ -2121,10 +2121,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turret Right
       objectReference: {fileID: 0}
-    - target: {fileID: 6883010223059420801, guid: 1ea3ffba3ecd554439c0525a24675585, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2583,10 +2579,6 @@ PrefabInstance:
     - target: {fileID: 6883010223059420801, guid: 0c8459e17ba86df4d909f94a6b20de32, type: 3}
       propertyPath: m_Name
       value: Turret
-      objectReference: {fileID: 0}
-    - target: {fileID: 6883010223059420801, guid: 0c8459e17ba86df4d909f94a6b20de32, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
