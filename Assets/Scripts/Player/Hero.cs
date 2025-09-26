@@ -8,12 +8,14 @@ public class Hero : MonoBehaviour
     [SerializeField] Collider2D groundCheck;
     [SerializeField] WorldData worldData;
     [SerializeField] PlayerData playerData;
+    [SerializeField] HeroAnimation heroAnimation;
 
     [SerializeField] ParticleSystem deathParticles;
     public event Action OnDeath;
 
     float coyoteTimer;
-    int direction;
+    int facingDir;
+    int inputDir;
 
     void Start()
     {
@@ -21,9 +23,13 @@ public class Hero : MonoBehaviour
         coyoteTimer = -playerData.coyoteTime;
     }
 
-    void Dash()
+    public void TryDash()
     {
-        rb.AddForceX(direction * playerData.dashPower);
+        if (!CheckGround())
+        {
+            rb.linearVelocityY = 0;
+            rb.AddForceX(facingDir * playerData.dashPower);
+        }
     }
 
 
@@ -53,10 +59,21 @@ public class Hero : MonoBehaviour
 
     public void Move(float dir)
     {
+
         rb.linearVelocityX = Mathf.Lerp(rb.linearVelocityX, dir * playerData.mSpeed, playerData.mSmoothing);
-        if (rb.linearVelocityX > 0) direction = 1;
-        else if (rb.linearVelocityX < 0) direction = -1;
+
+        if (rb.linearVelocityX > 0)
+        {
+            facingDir = 1;
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+        else if (rb.linearVelocityX < 0)
+        {
+            facingDir = -1;
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
     }
+
     public void Jump()
     {
         rb.AddForceY(playerData.jumpForce);
@@ -64,6 +81,8 @@ public class Hero : MonoBehaviour
 
     void Update()
     {
+        AnimationTree();
+
         if (CheckGround())
         {
             coyoteTimer = Time.time;
@@ -83,6 +102,32 @@ public class Hero : MonoBehaviour
         deathParticles.Play();
         StartCoroutine(FadeOut());
 
+    }
+
+    void AnimationTree()
+    {
+        if (CheckGround())
+        {
+            if (rb.linearVelocityX != 0)
+            {
+                heroAnimation.SetState(HeroAnimation.Run);
+            }
+            else
+            {
+                heroAnimation.SetState(HeroAnimation.Idle);
+            }
+        }
+        else
+        {
+            if (rb.linearVelocityY > 0)
+            {
+                heroAnimation.SetState(HeroAnimation.Jump);
+            }
+            else if (rb.linearVelocityY < 0)
+            {
+                heroAnimation.SetState(HeroAnimation.Fall);
+            }
+        }
     }
 
     IEnumerator FadeOut()

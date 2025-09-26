@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 291107483605920544}
   - component: {fileID: 4555988418913761718}
   - component: {fileID: 6611213114692587504}
-  - component: {fileID: 4325894838454131729}
   - component: {fileID: 7119256073302996867}
+  - component: {fileID: 8783748049015944171}
+  - component: {fileID: 850658466319561833}
+  - component: {fileID: 2654866981964381778}
   m_Layer: 0
   m_Name: Hero1
   m_TagString: Player
@@ -30,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.49, y: -2.06, z: 0}
-  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 42566440008657721}
@@ -84,7 +86,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 6738404220065285690, guid: 4dad7500f41219141bef3110faf6ee88, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -122,8 +124,61 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!58 &4325894838454131729
-CircleCollider2D:
+--- !u!114 &7119256073302996867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6427824046692667226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11a37ed7b54fadb42a5e2d25b46cf634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hero
+  rb: {fileID: 6611213114692587504}
+  groundCheck: {fileID: 1334452786184636196}
+  worldData: {fileID: 11400000, guid: d266be5a009e9634586fbd8f29052548, type: 2}
+  playerData: {fileID: 11400000, guid: 8e60611a9bc94364ea16ab89c535d91d, type: 2}
+  heroAnimation: {fileID: 850658466319561833}
+  deathParticles: {fileID: 4034185517227556877}
+--- !u!95 &8783748049015944171
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6427824046692667226}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 5825373151326091482, guid: 4dad7500f41219141bef3110faf6ee88, type: 3}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &850658466319561833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6427824046692667226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a74a0fec214c25e49aa144ae802dc86a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeroAnimation
+  animator: {fileID: 8783748049015944171}
+--- !u!70 &2654866981964381778
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -157,24 +212,8 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
---- !u!114 &7119256073302996867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6427824046692667226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11a37ed7b54fadb42a5e2d25b46cf634, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Hero
-  rb: {fileID: 6611213114692587504}
-  groundCheck: {fileID: 1334452786184636196}
-  worldData: {fileID: 11400000, guid: d266be5a009e9634586fbd8f29052548, type: 2}
-  playerData: {fileID: 11400000, guid: 8e60611a9bc94364ea16ab89c535d91d, type: 2}
-  deathParticles: {fileID: 4034185517227556877}
+  m_Size: {x: 0.75, y: 1}
+  m_Direction: 0
 --- !u!1 &8451266328786281541
 GameObject:
   m_ObjectHideFlags: 0

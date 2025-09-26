@@ -26,6 +26,9 @@ public class PlayerMovement : MonoBehaviour
         inputActions.Player.Enable();
 
         inputActions.Player.Jump.performed += Jump;
+        inputActions.Player.DashLeft.performed += DashLeft;
+        inputActions.Player.DashRight.performed += DashRight;
+
         SubscribeHeroEvents();
     }
 
@@ -59,6 +62,16 @@ public class PlayerMovement : MonoBehaviour
         {
             if (hero.CanJump()) hero.Jump();
         }
+    }
+
+    void DashLeft(InputAction.CallbackContext ctx)
+    {
+        heroLeft.TryDash();
+    }
+
+    void DashRight(InputAction.CallbackContext ctx)
+    {
+        heroRight.TryDash();
     }
 
     void GameOver()
