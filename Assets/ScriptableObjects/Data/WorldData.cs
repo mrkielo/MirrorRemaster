@@ -6,4 +6,5 @@ public class WorldData : ScriptableObject
    public LayerMask groundLayers;
    public LayerMask lethalLayers;
    public LayerMask portalLayers;
+   public int levelToScene;
 }

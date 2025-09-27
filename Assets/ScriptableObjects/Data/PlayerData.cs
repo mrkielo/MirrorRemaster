@@ -9,4 +9,5 @@ public class PlayerData : ScriptableObject
    public float coyoteTime;
    public float dashPower;
    public float dashTime;
+   public float jumpBufferTime;
 }

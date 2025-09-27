@@ -3,18 +3,21 @@ using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 
+[SelectionBase]
 public class Hero : MonoBehaviour
 {
     public Rigidbody2D rb;
     [SerializeField] Collider2D groundCheck;
-    [SerializeField] WorldData worldData;
-    [SerializeField] PlayerData playerData;
     [SerializeField] HeroAnimation heroAnimation;
+    [HideInInspector] public WorldData worldData;
+    [HideInInspector] public PlayerData playerData;
+    [HideInInspector] public LevelData levelData;
 
     [SerializeField] ParticleSystem deathParticles;
     public event Action OnDeath;
 
     float coyoteTimer;
+    float jumpBufferTimer;
     int facingDir;
     bool isDashing = false;
     bool isDashCharged = false;
@@ -24,6 +27,21 @@ public class Hero : MonoBehaviour
     {
         OnDeath += PlayDeathEffects;
         coyoteTimer = -playerData.coyoteTime;
+    }
+
+    void Update()
+    {
+        AnimationTree();
+
+        if (CheckGround())
+        {
+            if (CheckJumpBuffer())
+            {
+                TryJump();
+            }
+            coyoteTimer = Time.time;
+            isDashCharged = true;
+        }
     }
 
     public void TryDash()
@@ -54,6 +72,11 @@ public class Hero : MonoBehaviour
         return groundCheck.IsTouchingLayers(worldData.groundLayers);
     }
 
+    bool CheckJumpBuffer()
+    {
+        return jumpBufferTimer + playerData.jumpBufferTime > Time.time;
+    }
+
     public bool CheckPortal()
     {
         return groundCheck.IsTouchingLayers(worldData.portalLayers);
@@ -74,7 +97,7 @@ public class Hero : MonoBehaviour
 
     public bool CanDash()
     {
-        return !CheckGround() && isDashCharged;
+        return levelData.canDash && !CheckGround() && isDashCharged;
     }
 
     public void Move(float dir)
@@ -96,19 +119,15 @@ public class Hero : MonoBehaviour
         }
     }
 
-    public void Jump()
+    public void TryJump()
     {
-        rb.AddForceY(playerData.jumpForce);
-    }
-
-    void Update()
-    {
-        AnimationTree();
-
-        if (CheckGround())
+        if (CanJump())
         {
-            coyoteTimer = Time.time;
-            isDashCharged = true;
+            rb.AddForceY(playerData.jumpForce);
+        }
+        else
+        {
+            jumpBufferTimer = Time.time;
         }
     }
 

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3870306829572007303}
   - component: {fileID: 4331441472052266050}
   - component: {fileID: 7358166876123197648}
+  - component: {fileID: 4333323165705578899}
   m_Layer: 0
   m_Name: Players
   m_TagString: Untagged
@@ -49,6 +50,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   heroLeft: {fileID: 1351907313244424117}
   heroRight: {fileID: 9154260717051739177}
+  saveSystem: {fileID: 4333323165705578899}
+  levelData: {fileID: 11400000, guid: 385a532e230decd41b682780e9dac4c9, type: 2}
+  worldData: {fileID: 11400000, guid: d266be5a009e9634586fbd8f29052548, type: 2}
+  playerData: {fileID: 11400000, guid: 8e60611a9bc94364ea16ab89c535d91d, type: 2}
 --- !u!114 &7358166876123197648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,6 +84,18 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &4333323165705578899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3763204601826735565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e44e14abf596a3a46b08d54ea18737b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveSystem
 --- !u!1001 &2145642185325415338
 PrefabInstance:
   m_ObjectHideFlags: 0

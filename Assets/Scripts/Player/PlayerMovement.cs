@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
@@ -8,15 +9,34 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] Hero heroLeft;
     [SerializeField] Hero heroRight;
+    [SerializeField] SaveSystem saveSystem;
+
+
+    [Header("Data Objects")]
+    [SerializeField] LevelData levelData;
+    [SerializeField] WorldData worldData;
+    [SerializeField] PlayerData playerData;
+
+
     List<Hero> heroes = new List<Hero>();
-    bool canMove = true;
     InputSystem_Actions inputActions;
 
+    bool canMove = true;
+
+
+    float startTime;
 
     void Awake()
     {
         heroes.Add(heroLeft);
         heroes.Add(heroRight);
+        //Inject Data into heroes
+        foreach (var hero in heroes)
+        {
+            hero.worldData = worldData;
+            hero.playerData = playerData;
+            hero.levelData = levelData;
+        }
     }
 
     void Start()
@@ -30,14 +50,14 @@ public class PlayerMovement : MonoBehaviour
         inputActions.Player.DashRight.performed += DashRight;
 
         SubscribeHeroEvents();
+        saveSystem.saveData.unlockedLevel = SceneManager.GetActiveScene().buildIndex;
     }
 
     void Update()
     {
         if (CheckWin())
         {
-            Debug.Log("Win");
-            //TODO: Win things
+            Win();
         }
     }
     void FixedUpdate()
@@ -47,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Move()
     {
-        Vector2 dir = inputActions.Player.Move.ReadValue<Vector2>();
+        Vector2 dir = AnalogToDigital(inputActions.Player.Move.ReadValue<Vector2>());
         if (!canMove) dir = Vector2.zero;
         foreach (var hero in heroes)
         {
@@ -55,12 +75,24 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    Vector2 AnalogToDigital(Vector2 dir)
+    {
+        float x = dir.x, y = dir.y;
+
+        if (dir.x > 0.2) x = 1;
+        else if (dir.x < -0.2) x = -1;
+        else x = 0;
+        // if (Mathf.Abs(dir.y) > Mathf.Abs(dir.x)) x = 0;
+
+        return new Vector2(x, y);
+    }
+
     void Jump(InputAction.CallbackContext ctx)
     {
         if (!canMove) return;
         foreach (var hero in heroes)
         {
-            if (hero.CanJump()) hero.Jump();
+            hero.TryJump();
         }
     }
 
@@ -76,8 +108,17 @@ public class PlayerMovement : MonoBehaviour
 
     void GameOver()
     {
+        saveSystem.saveData.deathCount++;
+        Debug.Log(saveSystem.saveData.deathCount);
         canMove = false;
         Invoke("ReloadScene", 1f);
+    }
+    void Win()
+    {
+        canMove = false;
+        Debug.Log("Win");
+        int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
+        SceneManager.LoadScene(nextLevel);
     }
 
     bool CheckWin()
