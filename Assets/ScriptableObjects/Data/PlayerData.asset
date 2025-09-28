@@ -18,3 +18,4 @@ MonoBehaviour:
   coyoteTime: 0.075
   dashPower: 15
   dashTime: 0.2
+  jumpBufferTime: 0.1

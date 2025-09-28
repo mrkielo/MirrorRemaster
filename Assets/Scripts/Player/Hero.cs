@@ -7,8 +7,12 @@ using UnityEngine;
 public class Hero : MonoBehaviour
 {
     public Rigidbody2D rb;
+    [Header("References")]
     [SerializeField] Collider2D groundCheck;
     [SerializeField] HeroAnimation heroAnimation;
+    [SerializeField] HeroSounds sounds;
+
+    [Header("Data")]
     [HideInInspector] public WorldData worldData;
     [HideInInspector] public PlayerData playerData;
     [HideInInspector] public LevelData levelData;
@@ -48,6 +52,7 @@ public class Hero : MonoBehaviour
     {
         if (CanDash())
         {
+            sounds.PlayClip(sounds.Dash);
             StartCoroutine(DashCoroutine());
             isDashCharged = false;
         }
@@ -106,7 +111,6 @@ public class Hero : MonoBehaviour
         if (isDashing) return;
 
         rb.linearVelocityX = Mathf.Lerp(rb.linearVelocityX, dir * playerData.mSpeed, playerData.mSmoothing);
-
         if (rb.linearVelocityX > 0)
         {
             facingDir = 1;
@@ -117,13 +121,19 @@ public class Hero : MonoBehaviour
             facingDir = -1;
             transform.localScale = new Vector3(-1, 1, 1);
         }
+        Debug.Log("InputDir: " + inputDir + "CheckGround: " + CheckGround());
+        if (inputDir != 0 && CheckGround()) sounds.PlayClipIfEmpty(sounds.Walk);
+        if (inputDir == 0) sounds.StopClip(sounds.Walk);
+
     }
 
     public void TryJump()
     {
         if (CanJump())
         {
+            sounds.PlayClip(sounds.Jump);
             rb.AddForceY(playerData.jumpForce);
+            jumpBufferTimer = -1; // safe value to prevent multi jumping
         }
         else
         {
@@ -141,6 +151,7 @@ public class Hero : MonoBehaviour
 
     void PlayDeathEffects()
     {
+        sounds.PlayClip(sounds.Die);
         deathParticles.Play();
         StartCoroutine(FadeOut());
 
