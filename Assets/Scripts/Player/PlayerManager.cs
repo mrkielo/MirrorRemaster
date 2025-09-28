@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] Hero heroLeft;
     [SerializeField] Hero heroRight;
     [SerializeField] SaveSystem saveSystem;
+    [SerializeField] DeathMask deathMask;
     [SerializeField] PauseMenu pauseMenu;
 
 
@@ -23,6 +24,7 @@ public class PlayerManager : MonoBehaviour
     public InputSystem_Actions inputActions;
 
     bool canMove = true;
+    bool isWon = false;
 
 
     float startTime;
@@ -119,8 +121,27 @@ public class PlayerManager : MonoBehaviour
     }
     void Win()
     {
+        if (isWon) return;
+        isWon = true;
         canMove = false;
-        Debug.Log("Win");
+
+        deathMask.Play(heroLeft.transform.position, heroRight.transform.position);
+        Invoke("LoadNextScene", deathMask.time + 1f); //+0.5 for visual reasons
+        Invoke("PlayWinAnimations", deathMask.time);
+
+    }
+
+    void PlayWinAnimations()
+    {
+        foreach (var hero in heroes)
+        {
+            hero.isWon = true;
+            StartCoroutine(hero.FadeOut());
+        }
+    }
+
+    void LoadNextScene()
+    {
         int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
         SceneManager.LoadScene(nextLevel);
     }

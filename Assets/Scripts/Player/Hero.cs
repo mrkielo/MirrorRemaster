@@ -9,7 +9,7 @@ public class Hero : MonoBehaviour
     public Rigidbody2D rb;
     [Header("References")]
     [SerializeField] Collider2D groundCheck;
-    [SerializeField] HeroAnimation heroAnimation;
+    public HeroAnimation heroAnimation;
     [SerializeField] HeroSounds sounds;
 
     [Header("Data")]
@@ -21,10 +21,12 @@ public class Hero : MonoBehaviour
     public event Action OnDeath;
 
     float coyoteTimer;
-    float jumpBufferTimer;
+    float jumpBufferTimer = -1;
     int facingDir;
     bool isDashing = false;
     bool isDashCharged = false;
+    bool isDead = false;
+    public bool isWon = false;
     float inputDir;
 
     void Start()
@@ -121,7 +123,6 @@ public class Hero : MonoBehaviour
             facingDir = -1;
             transform.localScale = new Vector3(-1, 1, 1);
         }
-        Debug.Log("InputDir: " + inputDir + "CheckGround: " + CheckGround());
         if (inputDir != 0 && CheckGround()) sounds.PlayClipIfEmpty(sounds.Walk);
         if (inputDir == 0) sounds.StopClip(sounds.Walk);
 
@@ -131,6 +132,7 @@ public class Hero : MonoBehaviour
     {
         if (CanJump())
         {
+            rb.linearVelocityY = 0;
             sounds.PlayClip(sounds.Jump);
             rb.AddForceY(playerData.jumpForce);
             jumpBufferTimer = -1; // safe value to prevent multi jumping
@@ -151,6 +153,7 @@ public class Hero : MonoBehaviour
 
     void PlayDeathEffects()
     {
+        isDead = true;
         sounds.PlayClip(sounds.Die);
         deathParticles.Play();
         StartCoroutine(FadeOut());
@@ -159,6 +162,16 @@ public class Hero : MonoBehaviour
 
     void AnimationTree()
     {
+        if (isWon)
+        {
+            heroAnimation.SetState(HeroAnimation.Win);
+            return;
+        }
+        if (isDead)
+        {
+            heroAnimation.SetState(HeroAnimation.Death);
+            return;
+        }
         if (isDashing)
         {
             heroAnimation.SetState(HeroAnimation.Dash);
@@ -188,7 +201,7 @@ public class Hero : MonoBehaviour
         }
     }
 
-    IEnumerator FadeOut()
+    public IEnumerator FadeOut()
     {
         SpriteRenderer sprite = GetComponent<SpriteRenderer>();
         float startTime = Time.time;
