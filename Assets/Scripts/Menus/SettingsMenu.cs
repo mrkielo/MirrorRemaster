@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
+    [SerializeField] SaveSystem saveSystem;
     [Header("UI Elements")]
     [SerializeField] Button resetProgressButton;
-    [SerializeField] SaveSystem saveSystem;
 
     void Start()
     {
