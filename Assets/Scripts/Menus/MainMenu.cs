@@ -16,6 +16,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject levelSelectMenu;
     [SerializeField] GameObject settingsMenu;
+    [SerializeField] GameObject levelsList;
     [SerializeField] Button levelSelectBackButton;
     [SerializeField] Button settingsBackButton;
     [SerializeField] EventSystem eventSystem;
