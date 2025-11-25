@@ -21,6 +21,7 @@ public class PauseMenu : MonoBehaviour
     {
         inputActions.Player.Pause.performed += Toggle;
         inputActions.UI.Pause.performed += Toggle;
+        inputActions.UI.Cancel.performed += Toggle;
     }
 
 

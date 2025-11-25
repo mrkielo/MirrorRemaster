@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
+using UnityEngine.InputSystem;
 
 public class LevelSelectMenu : MonoBehaviour
 {
@@ -14,10 +16,36 @@ public class LevelSelectMenu : MonoBehaviour
     [SerializeField] SaveSystem saveSystem;
     [SerializeField] List<LevelButton> buttons;
     [SerializeField] Button backButton;
+    InputSystem_Actions inputActions;
 
-    void Start()
+    void Awake()
     {
+        inputActions = new InputSystem_Actions();
+        inputActions.Player.Disable();
+
+
         backButton.onClick.AddListener(Back);
+    }
+
+    void OnEnable()
+    {
+        inputActions.UI.Enable();
+        inputActions.UI.Cancel.performed += OnCancelPressed;
+    }
+    void OnDisable()
+    {
+        inputActions.UI.Cancel.performed -= OnCancelPressed;
+        inputActions.UI.Disable();
+        foreach (LevelButton button in buttons)
+        {
+            button.button.onClick.RemoveAllListeners();
+        }
+
+    }
+
+    void OnCancelPressed(InputAction.CallbackContext ctx)
+    {
+        Back();
     }
 
     public void Back()

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class MainMenu : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField] GameObject settingsFirstSelected;
     [SerializeField] GameObject levelsFirstSelected;
 
+    InputSystem_Actions inputActions;
+
     void Start()
     {
         levelSelectButton.onClick.AddListener(EnableLevelSelect);
@@ -34,9 +37,17 @@ public class MainMenu : MonoBehaviour
         EnableMainMenu();
 
     }
+
+    void Awake()
+    {
+        inputActions = new InputSystem_Actions();
+    }
     void OnEnable()
     {
         Invoke("RefreshPlayButton", 0.5f);
+        inputActions.Player.Disable();
+        inputActions.UI.Enable();
+
     }
 
     void Play()
@@ -61,13 +72,16 @@ public class MainMenu : MonoBehaviour
 
     void EnableLevelSelect()
     {
+        inputActions.UI.Cancel.performed += BackToMainMenu;
         mainMenu.SetActive(false);
         settingsMenu.SetActive(false);
+        levelSelectMenu.GetComponentInChildren<WorldSelectMenu>().inputActions = inputActions;
         levelSelectMenu.SetActive(true);
         eventSystem.SetSelectedGameObject(levelsFirstSelected);
     }
     void EnableSettings()
     {
+        inputActions.UI.Cancel.performed += BackToMainMenu;
         mainMenu.SetActive(false);
         levelSelectMenu.SetActive(false);
         settingsMenu.SetActive(true);
@@ -75,9 +89,22 @@ public class MainMenu : MonoBehaviour
     }
     void EnableMainMenu()
     {
+        inputActions.UI.Cancel.performed -= BackToMainMenu;
         settingsMenu.SetActive(false);
         levelSelectMenu.SetActive(false);
         mainMenu.SetActive(true);
         eventSystem.SetSelectedGameObject(playButton.gameObject);
     }
+
+
+    void BackToMainMenu(InputAction.CallbackContext ctx)
+    {
+        EnableMainMenu();
+    }
+
+    void OnDestroy()
+    {
+        inputActions.UI.Disable();
+    }
+
 }
