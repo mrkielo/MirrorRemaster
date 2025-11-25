@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum Worlds
@@ -9,6 +10,7 @@ public enum Worlds
    World4,
    World5
 }
+[System.Serializable]
 public class WorldsList
 {
    public WorldsList(Worlds world, int levelsFrom, int levelsTo)
@@ -18,6 +20,7 @@ public class WorldsList
       this.levelsTo = levelsTo;
    }
    public Worlds world;
+   public string title;
    public int levelsFrom;
    public int levelsTo;
 }
@@ -48,5 +51,34 @@ public class WorldData : ScriptableObject
          }
       }
       return result;
+   }
+
+   public string GetWorldName(Worlds world)
+   {
+      WorldsList list = worlds.Find((x) => x.world == world);
+      return list.title;
+   }
+
+   public static Worlds IntToWorld(int i)
+   {
+      switch (i)
+      {
+         case 1:
+            return Worlds.World1;
+            break;
+         case 2:
+            return Worlds.World2;
+            break;
+         case 3:
+            return Worlds.World3;
+            break;
+         case 4:
+            return Worlds.World4;
+            break;
+         case 5:
+            return Worlds.World5;
+            break;
+      }
+      return Worlds.World5;
    }
 }

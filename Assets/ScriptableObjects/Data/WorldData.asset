@@ -21,3 +21,25 @@ MonoBehaviour:
   portalLayers:
     serializedVersion: 2
     m_Bits: 128
+  levelToScene: 0
+  worlds:
+  - world: 0
+    title: World 1
+    levelsFrom: 1
+    levelsTo: 20
+  - world: 1
+    title: World 2
+    levelsFrom: 21
+    levelsTo: 40
+  - world: 2
+    title: World 3
+    levelsFrom: 41
+    levelsTo: 60
+  - world: 3
+    title: World 4
+    levelsFrom: 61
+    levelsTo: 80
+  - world: 4
+    title: World 5
+    levelsFrom: 81
+    levelsTo: 100

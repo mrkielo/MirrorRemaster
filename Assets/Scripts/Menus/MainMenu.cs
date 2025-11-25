@@ -36,7 +36,7 @@ public class MainMenu : MonoBehaviour
     }
     void OnEnable()
     {
-        RefreshPlayButton();
+        Invoke("RefreshPlayButton", 0.5f);
     }
 
     void Play()
