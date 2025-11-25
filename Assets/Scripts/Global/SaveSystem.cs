@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.IO;
+using System.Xml.Serialization;
 public class SaveData
 {
     public int unlockedLevel;
@@ -11,6 +12,16 @@ public class SaveData
         this.unlockedLevel = unlockedLevel;
         this.timer = timer;
         this.deathCount = deathCount;
+    }
+
+    public bool TrySetUnlockedLevel(int level)
+    {
+        if (level > unlockedLevel)
+        {
+            unlockedLevel = level;
+            return true;
+        }
+        return false;
     }
 }
 

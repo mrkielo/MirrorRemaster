@@ -56,7 +56,7 @@ public class PlayerManager : MonoBehaviour
         inputActions.Player.DashRight.performed += DashRight;
 
         SubscribeHeroEvents();
-        saveSystem.saveData.unlockedLevel = SceneManager.GetActiveScene().buildIndex;
+        saveSystem.saveData.TrySetUnlockedLevel(SceneManager.GetActiveScene().buildIndex);
     }
 
     void Update()
